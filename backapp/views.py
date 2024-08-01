@@ -25,6 +25,7 @@ def test_view(request):
 @csrf_exempt
 def uploadImage(request):
     if request.method == 'POST' and request.FILES['image']:
+        print('A request for upload image:', request)
         try:
             name = request.POST['name']
             image = request.FILES['image']  # upload the file at memory
@@ -83,21 +84,11 @@ def reRecognizeImage(request):
 
 # Function for displaying list in admin
 
-
 # def list_images(request):
 #     images = ImageModel.objects.all()
 #     image_data = [{'name': img.name, 'url': img.image.url, 'imageByte': str(img.image.read()),
 #                    'uploaded_at': img.uploaded_at, 'data': img.data, 'trash': img.trash} for img in images]
 #     return JsonResponse({'images': image_data})
-
-
-@csrf_exempt
-def deleteImages(request):
-    if request.method == 'GET':
-        try:
-            pass
-        except:
-            pass
 
 
 @csrf_exempt
@@ -156,6 +147,7 @@ def listImages(request):
             if images:
                 image_data = [{'name': img.name, 'url': img.image.url, 'df': img.data,
                                'uploaded_at': img.uploaded_at, 'trash': img.trash} for img in images]
+                print('Returning following images:', images)
                 return JsonResponse({'images': image_data})
             else:
                 return JsonResponse({'Error': 'No Images in database'})
@@ -163,48 +155,6 @@ def listImages(request):
     return JsonResponse({'Error': 'Invalid Request'})
 
 
-# @csrf_exempt
-# def recieveImage(request):
-#     print('in post')
-#     if request.method == 'POST' and request.FILES['upload_file']:
-#         try:
-#             # if JSON then ->
-#             # processImageJSON(request)
-
-#             uploadedFile = request.FILES['upload_file']
-
-#             fs = FileSystemStorage()
-
-#             filename = fs.save(uploadedFile.name, uploadedFile)
-
-#             uploaded_file_url = fs.url(filename)
-
-#             # if JSON then ->
-#             # return JsonResponse({'Message': 'Image uploaded Successfully'})
-#             return JsonResponse({'uploaded_file_url': uploaded_file_url})
-
-#         except Exception as e:
-#             print(str(e))
-#             return JsonResponse({'Exception': str(e)})
-#     return JsonResponse({'error': 'Invalid request method'})
-
-
-@csrf_exempt
-# def getImageByName(request):
-#     if request == 'GET':
-#         name = request.GET.get('name')
-#         if name:
-#             try:
-#                 image = ImageModel.objects.get(name=name)
-#                 print('Image:', image)
-#                 data = {
-#                     'url': image.url
-#                 }
-#                 return JsonResponse(data=data)
-#             except ImageModel.DoesNotExist:
-#                 return JsonResponse({'error': 'name not found'}, status=404)
-#         else:
-#             return JsonResponse({'error': 'name not provided'}, status=400)
 def processImageJSON(request):
     # convert bytes to string
     body_unicode = request.body.decode('utf-8')
@@ -223,15 +173,6 @@ def processImageJSON(request):
     filepath = os.path.join(os.path.dirname(
         __file__), f'media/images/test_image.{ext}')
 
-    # with open(filepath, 'wb') as f:
-    #     f.write(img)
-
     imagePIL = Image.open(BytesIO(img))
     imagePIL.save(filepath)
     imagePIL.show()
-
-    # with open(filepath, 'rb') as image:
-    #     f = image.read()
-    #     b = bytearray(f)
-    #     print('\n\n')
-    #     print(b)
