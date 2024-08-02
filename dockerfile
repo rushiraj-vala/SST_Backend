@@ -8,6 +8,7 @@ ENV PYTHONUNBUFFERED 1
 # Install Tesseract OCR and dependencies
 RUN apt-get update && \
     apt-get install -y \
+    tk-dev\
     python3-tk\
     tesseract-ocr \
     libtesseract-dev \
