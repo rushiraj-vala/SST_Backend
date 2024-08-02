@@ -1,1 +1,1 @@
-web: gunicorn backend.wsgi --bind 0.0.0.0:8765 
+web: python manage.py runserver 0.0.0.0:8765 
