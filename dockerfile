@@ -36,4 +36,5 @@ EXPOSE 8000
 EXPOSE 8765
 
 # Run the Django development server
-CMD ["gunicorn", "--bind", "0.0.0.0:8765", "backend.wsgi:application"]                
+CMD [ "python","manage.py","runserver","0.0.0.0:8765" ]
+# CMD ["gunicorn", "--bind", "0.0.0.0:8765", "backend.wsgi:application"]                
