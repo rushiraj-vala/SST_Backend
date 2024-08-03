@@ -38,11 +38,12 @@ ENV PATH="/user/bin:${PATH}"
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-RUN tesseract --version && \
-    python3 -c "import tkinter; print('tkinter is running')"
 
 # Copy the rest of the project files into the Docker container
 COPY . /app/
+
+RUN tesseract --version && \
+    python3 -c "import tkinter; print('tkinter is running')"
 
 RUN echo "PATH: $PATH" && \
     echo "Tesseract version:" && \
