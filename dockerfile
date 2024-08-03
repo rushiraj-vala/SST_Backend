@@ -32,7 +32,7 @@ RUN apt-get update && \
 # Set the working directory inside the Docker container
 WORKDIR /app
 
-ENV PATH="$PATH:/user/bin"
+ENV PATH="/user/bin:${PATH}"
 
 # Copy the requirements file and install Python dependencies
 COPY requirements.txt .
