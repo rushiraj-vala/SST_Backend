@@ -7,7 +7,7 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install Tesseract OCR and dependencies
-RUN sudo apt-get update && \
+RUN apt-get update && \
     apt-get install -y \
     lsb-release\
     wget\
