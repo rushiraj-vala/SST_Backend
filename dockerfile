@@ -26,9 +26,14 @@ RUN apt-get update && \
 # Set the working directory inside the Docker container
 WORKDIR /app
 
+ENV PATH="$PATH:/user/bin"
+
 # Copy the requirements file and install Python dependencies
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
+
+RUN tesseract --version && \
+    python3 -c "import tkinter; print('tkinter is running')"
 
 # Copy the rest of the project files into the Docker container
 COPY . /app/
