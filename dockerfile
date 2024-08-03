@@ -7,7 +7,7 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install Tesseract OCR and dependencies
-RUN apt-get update && \
+RUN sudo apt-get update && \
     apt-get install -y \
     lsb-release\
     wget\
@@ -44,6 +44,9 @@ RUN tesseract --version && \
 # Copy the rest of the project files into the Docker container
 COPY . /app/
 
+RUN echo "PATH: $PATH" && \
+    echo "Tesseract version:" && \
+    tesseract --version
 # Expose port 8000 for the Django application
 EXPOSE 8000
 EXPOSE 8765
