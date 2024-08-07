@@ -101,12 +101,9 @@ def listImages(request):
             try:
                 img = ImageModel.objects.get(name=name)
                 print('Image found at: ', img.image.url)
-                byteImage = str(img.image.read())
-                base64_string = base64.b64encode(byteImage).decode('utf-8')
-                data_url = f"data:image/png;base64,{base64_string}"
                 response = {
                     'url': img.image.url,
-                    'imageByte': "data_url",
+                    'imageByte': str(img.image.read()),
                     'df': img.data,
                 }
                 img_data = img.image
