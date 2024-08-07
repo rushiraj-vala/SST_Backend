@@ -106,7 +106,7 @@ def listImages(request):
                 data_url = f"data:image/png;base64,{base64_string}"
                 response = {
                     'url': img.image.url,
-                    'imageByte': data_url,
+                    'imageByte': "data_url",
                     'df': img.data,
                 }
                 img_data = img.image
