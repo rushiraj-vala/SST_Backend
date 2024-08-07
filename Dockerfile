@@ -18,7 +18,6 @@ RUN apt-get update && \
     python3.11\
     python3-pip\
     python3-tk\
-    tesseract-ocr \
     libtesseract-dev \
     libleptonica-dev \
     pkg-config \
@@ -29,6 +28,11 @@ RUN apt-get update && \
     libicu-dev && \
     rm -rf /var/lib/apt/lists/*
 
+RUN add-apt-repository ppa:alex-p/tesseract-ocr5
+
+RUN apt update
+
+RUN apt install tesseract-ocr
 # Set the working directory inside the Docker container
 WORKDIR /app
 
