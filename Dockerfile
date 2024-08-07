@@ -28,11 +28,15 @@ RUN apt-get update && \
     libicu-dev && \
     rm -rf /var/lib/apt/lists/*
 
-RUN add-apt-repository ppa:alex-p/tesseract-ocr5
+RUN git clone https://github.com/tesseract-ocr/tesseract.git /tesseract \
+    && cd /tesseract \
+    && git checkout 5.3.3 \
+    && ./autogen.sh \
+    && ./configure \
+    && make \
+    && make install \
+    && ldconfig
 
-RUN apt update
-
-RUN apt install tesseract-ocr
 # Set the working directory inside the Docker container
 WORKDIR /app
 
