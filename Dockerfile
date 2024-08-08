@@ -1,10 +1,10 @@
-# Use the official Ubuntu image from Docker Hub
+# Use the official Ubuntu 22.04 base image
 FROM ubuntu:22.04
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install Tesseract OCR and dependencies
+# Install necessary tools and add the Tesseract PPA
 RUN apt-get update && \
     apt-get install -y \
     lsb-release \
@@ -25,26 +25,18 @@ RUN apt-get update && \
     libpng-dev \
     libtiff-dev \
     libicu-dev \
-    libtool \
-    autoconf \
-    automake \
-    && rm -rf /var/lib/apt/lists/*
+    software-properties-common && \
+    add-apt-repository ppa:alex-p/tesseract-ocr5 && \
+    apt-get update && \
+    apt-get install -y tesseract-ocr && \
+    rm -rf /var/lib/apt/lists/*
 
-# Clone and build Tesseract OCR
-RUN git clone https://github.com/tesseract-ocr/tesseract.git /tesseract \
-    && cd /tesseract \
-    && git checkout 5.3.3 \
-    && ./autogen.sh \
-    && ./configure \
-    && make \
-    && make install \
-    && ldconfig
+# Verify Tesseract version and available languages
+RUN tesseract --version && \
+    tesseract --list-langs
 
 # Set the working directory inside the Docker container
 WORKDIR /app
-
-# Update PATH environment variable if necessary
-ENV PATH="/user/bin:${PATH}"
 
 # Copy the requirements file and install Python dependencies
 COPY requirements.txt .
@@ -52,13 +44,6 @@ RUN pip install -r requirements.txt
 
 # Copy the rest of the project files into the Docker container
 COPY . /app/
-
-# Verify installation and print versions
-RUN tesseract --version && \
-    python3 -c "import tkinter; print('tkinter is running')" && \
-    echo "PATH: $PATH" && \
-    echo "Tesseract version:" && \
-    tesseract --version
 
 # Expose port 8000 for the Django application
 EXPOSE 8000
