@@ -13,6 +13,7 @@ RUN apt-get update && \
     wget\
     gnupg\
     build-essential \
+    git\
     tk\
     tk-dev\
     python3.11\
